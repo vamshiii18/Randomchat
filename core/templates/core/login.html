@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Log in | {% endblock %}
+
+{% block content %}
+<div style="padding: 2rem; text-align: center;">
+    <h1 style="font-size: 2.5rem; color: white;">Log in</h1>
+</div>
+
+<form method="post" action="." style="max-width: 400px; margin: 0 auto;">
+    {% csrf_token %}
+
+    <div style="margin-bottom: 1rem;">
+        <label style="color: white;">Username</label>
+        <input type="text" name="username" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem; border-radius: 0.5rem; border: 1px solid #ccc;">
+    </div>
+
+    <div style="margin-bottom: 1rem; position: relative;">
+        <label style="color: white;">Password</label>
+        <input type="password" id="login-password" name="password" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem; border-radius: 0.5rem; border: 1px solid #ccc;">
+        <i id="eye-icon-login" class="fas fa-eye" onclick="togglePassword('login-password', 'eye-icon-login')" style="position: absolute; right: 1px; top: 70%; transform: translateY(-50%); cursor: pointer; color: #065F46; font-size: 1.25em;"></i>
+    </div>
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div style="margin-bottom: 1rem; padding: 0.75rem; border-radius: 0.5rem; background-color: #ffcccc; color: #900;">
+                    <p>{{ error|escape }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <button style="padding: 0.75rem 1.5rem; border-radius: 0.5rem; background-color: #065F46; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Log in</button>
+</form>
+
+<script>
+function togglePassword(passwordId, iconId) {
+    var passwordField = document.getElementById(passwordId);
+    var eyeIcon = document.getElementById(iconId);
+    
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = "password";
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+}
+</script>
+{% endblock %}

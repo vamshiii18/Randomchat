@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Rooms | {% endblock %}
+
+{% block content %}
+<style>
+    .header {
+        padding: 40px;
+        text-align: center;
+    }
+    .header h1 {
+        font-size: 3rem;
+        color: white;
+    }
+    .rooms-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+    }
+    .room {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    @media(min-width: 1024px) {
+        .room {
+            width: 25%;
+        }
+    }
+    .room-card {
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+    }
+    .room-card h2 {
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .room-card a {
+        display: block;
+        padding: 15px 25px;
+        background-color: #065F46;
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+    .room-card a:hover {
+        background-color: #054c3b;
+    }
+</style>
+
+<div class="header">
+    <h1>Rooms</h1>
+</div>
+
+<div class="rooms-container">
+    {% for room in rooms %}
+        <div class="room">
+            <div class="room-card">
+                <h2>{{ room.name }}</h2>
+                <a href="{% url 'room' room.slug %}">Join</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

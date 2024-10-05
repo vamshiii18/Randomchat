@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Welcome | {% endblock %}
+
+{% block content %}
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+    .container {
+        display: 0;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .content {
+        text-align: center;
+        text-decoration: none;
+        padding: 40px;
+    }
+    #i1 {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+        text-decoration: none;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: white;
+    }
+    #i2 {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        margin-top: 0px; /* Adjust spacing between title and slogan */
+    }
+    .logo {
+        width: 30%; /* Adjust the width as needed */
+        
+    }
+    .logo1 {
+        padding-left: 4%;
+        width: 30%;
+    }
+    .promo-section {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+    margin: 20px auto;
+    margin-top: 40px; /* Adjust this value as needed */
+    border-radius: 10px;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20%;
+}
+
+    .promo-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    .promo-section p {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+    .footer {
+        background-color: #000;
+        color: white;
+        text-align: center;
+        padding: 5px 0;
+        margin-top: auto; /* Ensures the footer sticks to the bottom */
+    }
+</style>
+<div class="container">
+    <div class="content">
+        <h1 id="i1">Walki Talkie</h1>
+        <h3 id="i2">"Instant Conversations, Anytime, Anywhere"</h3>
+
+        <div class="logo-container" style="padding-bottom: 20%;">
+            <img src="{% static 'images/chate.jpg' %}" alt="Logo" class="logo1">
+            <img src="{% static 'images/chatb.jpg' %}" alt="Logo" class="logo">
+            <img src="{% static 'images/chata.jpg' %}" alt="Logo" class="logo">
+        </div>
+
+        <!-- Promo section moved here -->
+        <div class="promo-section">
+            <h1>Talk to strangers, Make friends!</h1>
+            <p>Experience a random chat alternative to find friends, connect with people, and chat with strangers from all over the world!</p>
+        </div>
+
+        <!-- Additional content can be added here -->
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Walki Talkie. All Rights Reserved.</p>
+        <p>Contact us: <a href="{% url 'support_page' %}" style="color: white;">support@walkitalkie.com</a></p>
+    </div>
+</div>
+{% endblock %}

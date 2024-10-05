@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Support | {% endblock %}
+
+{% block content %}
+<style>
+    .support-container {
+        text-align: center;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 50px auto;
+        border-radius: 10px;
+    }
+    .support-container1  {
+        text-align:left;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 50px auto;
+        border-radius: 10px;
+    }
+    .support-container h1 {
+        margin-bottom: 20px;
+    }
+    .support-container p {
+        margin: 10px 0;
+    }
+    .support-container a {
+        color: #28a745;
+        text-decoration: none;
+    }
+    .support-container a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="support-container">
+    <h1>{{ name }}</h1>
+    <p>{{ description }}</p>
+    <p>Contact us: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+</div>
+<div class="support-container1">
+    <h2>Website Rules</h2>
+    <ul>
+        <li>Be respectful to others.</li>
+        <li>No spamming or advertising.</li>
+        <li>Use appropriate language.</li>
+        <li>Do not share personal information.</li>
+        <li>Follow all community guidelines and policies.</li>
+        <li>Report any suspicious activity to support.</li>
+        <!-- Add more rules as necessary -->
+    </ul>
+    
+</div>
+
+{% endblock %}
