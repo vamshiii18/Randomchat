@@ -11,7 +11,7 @@
         height: 100%;
     }
     .container {
-        display: 0;
+        display: flex;
         flex-direction: column;
         min-height: 100vh;
     }
@@ -37,27 +37,67 @@
         color: white;
         margin-top: 0px; /* Adjust spacing between title and slogan */
     }
-    .logo {
-        width: 30%; /* Adjust the width as needed */
-        
+/* Hero Section */
+.hero {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: #cbd5e1; /* Light gray text */
+        }
+
+        .hero button {
+            background: #10b981;
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+
+
+    .slideshow-container {
+        position: relative;
+        max-width: 800px;
+        margin: auto;
     }
-    .logo1 {
-        padding-left: 4%;
-        width: 30%;
+    .slides {
+        display: none;
+    }
+    .slides img {
+        width: 100%;
+        border-radius: 10px;
     }
     .promo-section {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 50px 20px;
-    margin: 20px auto;
-    margin-top: 40px; /* Adjust this value as needed */
-    border-radius: 10px;
-    max-width: 800px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20%;
-}
-
+        background-color: #000;
+        color: #fff;
+        text-align: center;
+        padding: 50px 20px;
+        margin: 20px auto;
+        margin-top: 40px; /* Adjust this value as needed */
+        border-radius: 10px;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20%;
+    }
     .promo-section h1 {
         font-size: 2.5rem;
         margin-bottom: 20px;
@@ -74,15 +114,29 @@
         margin-top: auto; /* Ensures the footer sticks to the bottom */
     }
 </style>
+<div class="hero">
+    <h1> InstaChat Is The Instant random chat app</h1>
+    <p>
+        With Instachat, you can talk to people from around the world for free.
+        Click the "start" button to get started.
+    </p>
+    <button onclick="location.href='/signup/'">Start</button>
+</div>
+
 <div class="container">
     <div class="content">
-        <h1 id="i1">Walki Talkie</h1>
-        <h3 id="i2">"Instant Conversations, Anytime, Anywhere"</h3>
+        
 
-        <div class="logo-container" style="padding-bottom: 20%;">
-            <img src="{% static 'images/chate.jpg' %}" alt="Logo" class="logo1">
-            <img src="{% static 'images/chatb.jpg' %}" alt="Logo" class="logo">
-            <img src="{% static 'images/chata.jpg' %}" alt="Logo" class="logo">
+        <div class="slideshow-container">
+            <div class="slides">
+                <img src="{% static 'images/chate.jpg' %}" alt="Image 1">
+            </div>
+            <div class="slides">
+                <img src="{% static 'images/chatb.jpg' %}" alt="Image 2">
+            </div>
+            <div class="slides">
+                <img src="{% static 'images/chata.jpg' %}" alt="Image 3">
+            </div>
         </div>
 
         <!-- Promo section moved here -->
@@ -90,8 +144,6 @@
             <h1>Talk to strangers, Make friends!</h1>
             <p>Experience a random chat alternative to find friends, connect with people, and chat with strangers from all over the world!</p>
         </div>
-
-        <!-- Additional content can be added here -->
     </div>
 
     <div class="footer">
@@ -99,4 +151,17 @@
         <p>Contact us: <a href="{% url 'support_page' %}" style="color: white;">support@walkitalkie.com</a></p>
     </div>
 </div>
+
+<script>
+    let slideIndex = 0;
+    const showSlides = () => {
+        const slides = document.querySelectorAll('.slides');
+        slides.forEach(slide => slide.style.display = 'none');
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1; }
+        slides[slideIndex - 1].style.display = 'block';
+        setTimeout(showSlides, 3000); // Change image every 3 seconds
+    }
+    showSlides();
+</script>
 {% endblock %}

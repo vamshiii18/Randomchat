@@ -35,11 +35,9 @@ LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,8 +48,7 @@ INSTALLED_APPS = [
     'channels',
     'core',
     'room',
-    
-    
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +83,6 @@ WSGI_APPLICATION = 'djangochat.wsgi.application'
 ASGI_APPLICATION = 'djangochat.asgi.application'
 
 CHANNEL_LAYERS = {
-
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
@@ -99,7 +95,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'updated_db.sqlite3',
     }
 }
 
@@ -128,11 +124,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'  # Set to your desired local time zone
+USE_TZ = True  # Enable timezone support
 
+# Ensure other time settings are correct
 USE_I18N = True
-
-USE_TZ = True
+USE_L10N = True
 
 
 # Static files (CSS, JavaScript, Images)

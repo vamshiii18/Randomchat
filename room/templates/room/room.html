@@ -1,183 +1,314 @@
-{% extends 'core/base.html' %}
-
 {% block title %}{{ room.name }} | {% endblock %}
 
 {% block content %}
 <style>
-    .header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background-color: #000; /* Assuming you want a black background for contrast */
-        padding: 20px 0; /* Add padding for some spacing */
+    body {
+        background-color: #2f3136;
+        color: #dcddde;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        overflow: hidden;
     }
-    .header h1 {
-        font-size: 3rem;
-        color: white;
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #202225;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar .logo {
+        font-size: 1.5rem;
+        color: #ffffff;
+        font-weight: bold;
+        text-decoration: none;
+        margin-left: 15px;
+    }
+
+    .navbar .nav-links {
+        display: flex;
+        gap: 15px;
+        margin-right: 20px;
     }
     
-    .container {
-        max-width: 50%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    .navbar .nav-links a {
+        text-decoration: none;
+        color: #dcddde;
+        font-size: 1rem;
+        transition: color 0.2s;
+        padding: 8px 12px;
     }
 
-    .chat-messages {
-        margin-top: 10px;
-        padding: 10px;
+    .navbar .nav-links a:hover {
+        color: #5865f2;
     }
 
-    .message {
-        margin-bottom: 10px;
-        padding: 20px;
-        background-color: #e5e5e5; /* Equivalent to bg-gray-200 */
-        border-radius: 20px;
-    }
-
-    .message p {
+    .header {
+        font-size: 1.8rem;
+        color: #ffffff;
         margin: 0;
     }
 
+    .header h1 {
+        font-size: 1.8rem;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #2f3136;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 60vh;
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 55vh;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+        display: none;
+    }
+
+    .message {
+        padding: 10px;
+        background-color: #36393f;
+        border-radius: 8px;
+        word-wrap: break-word;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
     .message .username {
-        font-weight: bold; /* Equivalent to font-semibold */
+        font-weight: bold;
+        color: #5865f2;
+        margin-bottom: 5px;
+    }
+
+    .message .time {
+        font-size: 0.8rem;
+        color: #72767d;
+        margin-top: 5px;
+        align-self: flex-end;
     }
 
     .form-container {
-        max-width: 50%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 800px;
         margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        background-color: #40444b;
+        border-radius: 10px;
     }
 
-    .form-container form {
+    .input-container {
         display: flex;
         align-items: center;
-    }
-
-    .form-container input[type="text"] {
         flex: 1;
-        margin-right: 10px;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
+        gap: 10px;
     }
 
-    .form-container button {
-        padding: 10px 20px;
+    .input-container input[type="text"] {
+        flex: 1;
+        padding: 12px;
         border: none;
         border-radius: 10px;
-        background-color: #065F46;
-        color: white;
+        background-color: #2f3136;
+        color: #dcddde;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .input-container input::placeholder {
+        color: #72767d;
+    }
+
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .action-buttons button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #dcddde;
         cursor: pointer;
     }
 
-    .form-container button:hover {
-        background-color: #006666;
+    .action-buttons button:hover {
+        color: #5865f2;
     }
 </style>
 
+<!-- Navbar -->
+<div class="navbar">
+    <a href="/" class="logo"><i class="fas fa-comments"></i> InstaChat</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/rooms">Rooms</a>
+    </div>
+</div>
+
+<!-- Header -->
 <div class="header">
     <h1>{{ room.name }}</h1>
 </div>
 
+<!-- Chat Container -->
 <div class="container">
     <div class="chat-messages" id="chat-messages">
-        {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
-
+        {% for m in messages %}
+            <div class="message">
+                <p class="username">{{ m.user.username }}</p>
+                <p>{{ m.content }}</p>
+                <p class="time">{{ m.timestamp }}</p>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
+<!-- Message Input Form -->
 <div class="form-container">
-    <form method="post" action=".">
-        {% csrf_token %}
-        <input type="text" name="content" placeholder="Your message..." id="chat-message-input">
-        <button type="submit" id="chat-message-submit">Submit</button>
-    </form>
+    <div class="input-container">
+        <input type="text" id="chat-message-input" placeholder="Type a message...">
+    </div>
+    <div class="action-buttons">
+        <button class="emoji-btn">😊</button>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-{{ room.slug|json_script:"json-roomname" }}
-{{ request.user.username|json_script:"json-username" }}
 <script>
-    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
-    const userName = JSON.parse(document.getElementById('json-username').textContent);
-    let chatSocket;
+    const chatMessages = document.getElementById("chat-messages");
+    const messageInput = document.getElementById("chat-message-input");
 
-    function connectWebSocket() {
-        chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/'
-            + roomName
-            + '/'
-        );
+    // Use room.slug (or room.name if your room names are URL-safe)
+    const roomName = "{{ room.slug }}";  
+    // Current user's username (ensure user is logged in)
+    const username = "{{ user.username }}";
 
-        chatSocket.onclose = function(e) {
-            console.log('Socket closed unexpectedly. Attempting to reconnect in 1 second.', e.reason);
-            setTimeout(function() {
-                connectWebSocket();
-            }, 1000);
-        };
+    // Choose the correct protocol for WebSocket
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const chatSocket = new WebSocket(
+        wsScheme + '://' + window.location.host + '/ws/' + roomName + '/'
+    );
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
+    chatSocket.onopen = function(e) {
+        console.log("WebSocket connection established.");
+    };
 
-            if (data.message) {
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message';
-                messageElement.innerHTML = `<p class="username">${data.username}</p><p>${data.message}</p>`;
-                document.querySelector('#chat-messages').appendChild(messageElement);
-            } else {
-                alert('The message was empty!');
-            }
+    chatSocket.onerror = function(e) {
+        console.error("WebSocket error:", e);
+    };
 
-            scrollToBottom();
-        };
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log("Message received:", data);
+        const message = data.message;
+        const sender = data.username;
+        const timestamp = data.timestamp;
+
+        const messageElement = document.createElement("div");
+        messageElement.className = "message";
+        messageElement.innerHTML = `
+            <p class="username">${sender}</p>
+            <p>${message}</p>
+            <p class="time">${timestamp}</p>
+        `;
+        chatMessages.appendChild(messageElement);
+        scrollToBottom();
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error("WebSocket closed unexpectedly.");
+    };
+
+    // List of bad words (add or remove as needed)
+    const badWords = [
+        "damn", "hell", "shit", "fuck", "bitch", "asshole", "bastard", "dick", 
+        "piss", "prick", "slut", "whore", "cunt", "faggot", "nigger", "nigga",
+        "motherfucker", "cock", "dumbass", "jackass", "pussy", "twat", "wanker",
+        "bollocks", "bugger", "wank", "arse", "dipshit", "douche", "douchebag"
+    ];
+
+    function containsBadWords(message) {
+        return badWords.some(word => message.toLowerCase().includes(word));
     }
 
-    connectWebSocket();
-
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {
-            document.querySelector('#chat-message-submit').click();
-        }
-    };
-
-    document.querySelector('#chat-message-submit').onclick = function(e) {
-        e.preventDefault();
-
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
-
-        if (chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': userName,
-                'room': roomName
-            }));
-            messageInputDom.value = '';
-        } else {
-            console.log('WebSocket is not open. Ready state is: ' + chatSocket.readyState);
-        }
-
-        return false;
-    };
+    function filterBadWords(message) {
+        let filteredMessage = message;
+        badWords.forEach(word => {
+            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+            filteredMessage = filteredMessage.replace(regex, '****');
+        });
+        return filteredMessage;
+    }
 
     function scrollToBottom() {
-        let objDiv = document.getElementById("chat-messages");
-        objDiv.scrollTop = objDiv.scrollHeight;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    scrollToBottom();
+    // Listen for the Enter key to send a message
+    messageInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            let message = messageInput.value.trim();
+            if (message) {
+                if (containsBadWords(message)) {
+                    alert("Your message contains inappropriate words.");
+                    return;
+                }
+                message = filterBadWords(message);
+
+                // Send message via WebSocket with username and room info
+                chatSocket.send(JSON.stringify({
+                    "message": message,
+                    "username": username,
+                    "room": roomName
+                }));
+
+                // (Optional) You can also append your own message immediately:
+                // const selfMessage = document.createElement("div");
+                // selfMessage.className = "message";
+                // selfMessage.innerHTML = `
+                //     <p class="username">You</p>
+                //     <p>${message}</p>
+                //     <p class="time">${new Date().toLocaleTimeString()}</p>
+                // `;
+                // chatMessages.appendChild(selfMessage);
+                // scrollToBottom();
+
+                messageInput.value = "";
+            }
+        }
+    });
+
+    // Scroll chat to the bottom when the page loads
+    document.addEventListener("DOMContentLoaded", scrollToBottom);
 </script>
 {% endblock %}
-
-

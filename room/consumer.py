@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Message, Room
 from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
+from datetime import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -14,7 +15,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -28,10 +28,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        username = text_data_json['username']  # Get the username from the message
+        username = text_data_json['username']
         room = text_data_json['room']
 
+        # Save message to the database
         await self.save_message(username, room, message)
+
+        # Get the current timestamp
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -39,19 +43,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'username': username  # Include the username in the group message
+                'username': username,
+                'timestamp': timestamp
             }
         )
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-        username = event['username']  # Get the username from the event
+        username = event['username']
+        timestamp = event['timestamp']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
-            'username': username  # Include the username in the message sent to the WebSocket
+            'username': username,
+            'timestamp': timestamp
         }))
 
     @sync_to_async
